@@ -1,26 +1,30 @@
 class Train
-  attr_reader :number, :type
+  attr_reader :number, :carrig
 
-  def initialize(number, *type)
+  def initialize(number)
     @number = number
-    @type = type
     @speed = 0
     @route
     @arr_stations = []
     @train_now = nil
     @sum = 0
+    @carrig = []
   end
 
   def type_train
-    @type.each { |x| puts x}
+    puts self.class
   end
 
-  def speed(arg)
-    @speed += arg
+  def speed=(arg)
+    @speed = arg if @speed > 0
   end
 
   def show_speed
     puts @speed
+  end
+
+  def start
+    @speed = 100
   end
 
   def stop
@@ -28,7 +32,8 @@ class Train
   end
 
   def show_carriages
-    puts @type[1]
+    puts "Колличество вагонов у поезда: #{@carrig.size}"
+    @carrig.each { |carrig| puts carrig }
   end
 
   def show_route(arg = nil)
@@ -39,19 +44,24 @@ class Train
     end
   end
 
-  def add_carrig
+  def add_carrig(carrig)
     if @speed.zero?
-      @type[1] += 1
+      @carrig << carrig
+      carrig.change_status(self)
     else
       puts "На ходу нельзя цеплять вагоны!"
     end
   end
 
-  def delete_carrig
-    if @type[1].zero?
+  def delete_carrig(carrig = nil)
+    if @carrig.size.zero?
       puts "Вагонов уже не осталось."
+    elsif carrig.nil? && @speed.zero?
+      disconnect_carrig = @carrig.delete_at(0)
+      disconnect_carrig.change_status(self)
     elsif @speed.zero?
-      @type[1] -= 1
+      @carrig.delete(carrig)
+      carrig.change_status(self)
     else
       puts "На ходу нельзя отцеплять вагоны!"
     end
@@ -70,6 +80,7 @@ class Train
     elsif @sum == @arr_stations.size - 1
       puts 'Поезд находится на конечной станции'
     else
+      start
       @sum += 1
       @train_now.send_train(self)
       @arr_stations[@sum].get_train(self)
@@ -83,6 +94,7 @@ class Train
     elsif @sum == 0
       puts 'Поезд находится на начальной станции'
     else
+      start
       @sum -= 1
       @train_now.send_train(self)
       @arr_stations[@sum].get_train(self)

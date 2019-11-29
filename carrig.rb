@@ -3,19 +3,27 @@ class Carrig
 
   def initialize(number)
     @number = number
-    @connection_status = false
+    @status = false
+  end
+
+  def change_status(train)
+    if train.carrig.include?(self)
+      connect
+    else
+      disconnect
+    end
   end
 
   def connect
-    @connection_status = true
+    @status = true
   end
 
   def disconnect
-    @connection_status = false
+    @status = false
   end
 
   def to_s
-    "Тип вагона: #{self.class}, номер: #{number}, соединен ли с поездом: #{@connection_status}, "
+    "Тип вагона: #{self.class}, номер: #{number}, соединен ли с поездом: #{@status}, "
   end
 
   # Методы необходимо инкапсулировать, для того, чтобы их статус мог быть изменен
