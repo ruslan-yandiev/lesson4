@@ -89,6 +89,26 @@ def destroy_station(number_route)
   @hh_route[number_route].delete_way(@hh_station[name_station]) if @hh_station[name_station]
 end
 
+def connect_carrig
+  arr_cargo_train.each do |train|
+    arr_f.each { |carrig| train.add_carrig(carrig) }
+  end
+
+  arr_passenger_train.each do |train|
+    arr_p.each { |carrig| train.add_carrig(carrig) }
+  end
+end
+
+def show_carr
+  arr_cargo_train.each do |train|
+    train.show_carriages
+  end
+
+  arr_passenger_train.each do |train|
+    train.show_carriages
+  end
+end
+
 station
 route
 p @hh_station
@@ -108,44 +128,48 @@ begin
 end while yes_or_no != 'нет' && yes_or_no != ''
 
 
+puts 'Сколько грузовых и товарных вагонов создать?'
+quantity = gets.chomp.to_i
+
+arr_f = []
+arr_p = []
+
+1.upto(quantity) do |number|
+  arr_f << FreightCarrig.new(number, 5000)
+
+  arr_p << PassengerCarrig.new(number, 100)
+end
+
+puts 'Сколько грузовых и товарных поездов создать?'
+quantity = gets.chomp.to_i
+
+arr_cargo_train = []
+arr_passenger_train = []
+
+1.upto(quantity) do |number|
+  arr_cargo_train << CargoTrain.new(number)
+
+  arr_passenger_train << PassengerTrain.new(number)
+end
+
+puts 'Присоединить к созданным поездам имеющиеся вагоны? (да/нет)?'
+yes_or_no = gets.chomp
+
+connect_carrig if yes_or_no == 'да'
+
+puts 'Отобразить информацию о вагонах у поездов? (да/нет)?'
+yes_or_no = gets.chomp
+
+show_carr if yes_or_no == 'да'
 
 
 
 
+cargo_train.delete_carrig
+passenger_train.delete_carrig
 
-
-
-# arr_f = []
-# arr_p = []
-
-# 1.upto(5) do |number|
-#   freight_carrig = FreightCarrig.new(number, 5000)
-#   arr_f << freight_carrig
-
-#   passenger_carrig = PassengerCarrig.new(number, 100)
-#   arr_p << passenger_carrig
-# end
-
-# arr_f.each { |carrig| puts carrig }
-# arr_p.each { |carrig| puts carrig }
-
-# cargo_train = CargoTrain.new(1)
-# passenger_train = PassengerTrain.new(1)
-
-# arr_f.each { |carrig| cargo_train.add_carrig(carrig) }
-# arr_p.each { |carrig| passenger_train.add_carrig(carrig) }
-
-# cargo_train.show_carriages
-# passenger_train.show_carriages
-
-# cargo_train.delete_carrig(cargo_train.carrig[3])
-# passenger_train.delete_carrig(passenger_train.carrig[3])
-
-# cargo_train.delete_carrig
-# passenger_train.delete_carrig
-
-# cargo_train.show_carriages
-# passenger_train.show_carriages
+cargo_train.show_carriages
+passenger_train.show_carriages
 
 # station1 = Station.new('Санкт-Петербург')
 # station2 = Station.new('Владикавказ')
