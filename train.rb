@@ -105,4 +105,7 @@ class Train
   def show_where
     puts "Поезд находится на станции: #{@train_now.name}" if @route
   end
+
+  #метод защищен так как нельзя стартовать не зная в каком направлении должен двигаться поезд.
+  protected :start
 end
