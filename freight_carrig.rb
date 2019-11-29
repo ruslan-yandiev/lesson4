@@ -5,4 +5,8 @@ class FreightCarrig < Carrig
     super(number)
     @cargo_capacity = cargo_capacity
   end
+
+  def to_s
+    super + "грузоподъемность: #{cargo_capacity}"
+  end
 end
