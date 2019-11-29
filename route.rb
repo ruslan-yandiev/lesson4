@@ -5,8 +5,8 @@ class Route
     @route = [starting, final]
   end
 
-  def add_stations(*new_route)
-    new_route.each { |route| @route.insert(-2, route) }
+  def add_stations(new_route)
+    @route.insert(-2, new_route)
   end
 
   def delete_way(way)
