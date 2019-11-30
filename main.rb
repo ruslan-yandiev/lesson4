@@ -117,6 +117,14 @@ def passenger_carrige_delete(carrig_cum, train_num)
   carrig_cum.times { @arr_passenger_train[train_num - 1].delete_carrig }
 end
 
+def go_go_cargo(num)
+  num.times { |index| @arr_cargo_train[index].go }
+end
+
+def go_go_passenger(num)
+  num.times { |index| @arr_passenger_train[index].go }
+end
+
 station
 
 route
@@ -200,19 +208,44 @@ yes_or_no = gets.chomp
 show_carr if yes_or_no == 'да'
 
 
-# cargo_train.delete_carrig
-# passenger_train.delete_carrig
+def train_add_route
+  puts 'необходимо назначить путь поездам'
 
-# cargo_train.show_carriages
-# passenger_train.show_carriages
+  @arr_cargo_train.each.with_index(1) do |train, index|
+    puts "Укажите путь для #{index}-го грузового поезда"
+    route = gets.chomp
 
-# station1 = Station.new('Санкт-Петербург')
-# station2 = Station.new('Владикавказ')
-# station3 = Station.new('Москва')
-# station4 = Station.new('Краснодар')
+    train.add_route(@hh_route[route]) if @hh_route[route]
+  end
 
-# route1 = Route.new(station1, station2)
-# route1.add_stations(station3, station4)
+  @arr_passenger_train.each.with_index(1) do |train, index|
+    puts "Укажите путь для #{index}-го пассажирского поезда"
+    route = gets.chomp
+
+    train.add_route(@hh_route[route]) if @hh_route[route]
+  end
+end
+
+train_add_route
+
+puts 'Хотите отправить поезда в путь (да/нет)'
+yes_or_no = gets.chomp
+
+if yes_or_no == 'да'
+  puts "сколько из #{@arr_cargo_train.size} грузовых поездов отправить?"
+  quantity = gets.chomp.to_i
+
+  go_go_cargo(quantity) if @arr_cargo_train.size <= quantity
+
+  puts "сколько из #{@arr_passenger_train.size} пассажирских поездов отправить?"
+  quantity = gets.chomp.to_i
+
+  go_go_passenger(quantity) if @arr_passenger_train.size <= quantity
+end
+
+# @arr_cargo_train = []
+# @arr_passenger_train = []
+# @hh_route = {}
 
 # cargo_train.add_route(route1)
 # passenger_train.add_route(route1)
