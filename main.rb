@@ -90,30 +90,36 @@ def destroy_station(number_route)
 end
 
 def connect_carrig
-  arr_cargo_train.each do |train|
-    arr_f.each { |carrig| train.add_carrig(carrig) }
+  @arr_cargo_train.each do |train|
+    @arr_f.each { |carrig| train.add_carrig(carrig) }
   end
 
-  arr_passenger_train.each do |train|
-    arr_p.each { |carrig| train.add_carrig(carrig) }
+  @arr_passenger_train.each do |train|
+    @arr_p.each { |carrig| train.add_carrig(carrig) }
   end
 end
 
 def show_carr
-  arr_cargo_train.each do |train|
+  @arr_cargo_train.each do |train|
     train.show_carriages
   end
 
-  arr_passenger_train.each do |train|
+  @arr_passenger_train.each do |train|
     train.show_carriages
   end
 end
 
+def cargo_carrige_delete(carrig_cum, train_num)
+  carrig_cum.times { @arr_cargo_train[train_num - 1].delete_carrig }
+end
+
+def passenger_carrige_delete(carrig_cum, train_num)
+  carrig_cum.times { @arr_passenger_train[train_num - 1].delete_carrig }
+end
+
 station
+
 route
-p @hh_station
-puts
-p @hh_route
 
 begin
   puts 'Хотите скоректировать какой-то маршрут? (да/нет)'
@@ -131,25 +137,25 @@ end while yes_or_no != 'нет' && yes_or_no != ''
 puts 'Сколько грузовых и товарных вагонов создать?'
 quantity = gets.chomp.to_i
 
-arr_f = []
-arr_p = []
+@arr_f = []
+@arr_p = []
 
 1.upto(quantity) do |number|
-  arr_f << FreightCarrig.new(number, 5000)
+  @arr_f << FreightCarrig.new(number, 5000)
 
-  arr_p << PassengerCarrig.new(number, 100)
+  @arr_p << PassengerCarrig.new(number, 100)
 end
 
 puts 'Сколько грузовых и товарных поездов создать?'
 quantity = gets.chomp.to_i
 
-arr_cargo_train = []
-arr_passenger_train = []
+@arr_cargo_train = []
+@arr_passenger_train = []
 
 1.upto(quantity) do |number|
-  arr_cargo_train << CargoTrain.new(number)
+  @arr_cargo_train << CargoTrain.new(number)
 
-  arr_passenger_train << PassengerTrain.new(number)
+  @arr_passenger_train << PassengerTrain.new(number)
 end
 
 puts 'Присоединить к созданным поездам имеющиеся вагоны? (да/нет)?'
@@ -162,14 +168,43 @@ yes_or_no = gets.chomp
 
 show_carr if yes_or_no == 'да'
 
+puts 'Хотите отцепить товарные вагоны? (да/нет)?'
+yes_or_no = gets.chomp
+
+if yes_or_no == 'да'
+  puts 'сколько вагонов отцепить?'
+  quantity_carrig = gets.chomp.to_i
+
+  puts "У какого поезда отцепить?\nВыберите номер поезда от 1 до #{quantity}"
+  carrig_num = gets.chomp.to_i
+
+  cargo_carrige_delete(quantity_carrig, carrig_num)
+end
+
+puts 'Хотите отцепить пассажирские вагоны? (да/нет)?'
+yes_or_no = gets.chomp
+
+if yes_or_no == 'да'
+  puts 'сколько вагонов отцепить?'
+  quantity_carrig = gets.chomp.to_i
+
+  puts "У какого поезда отцепить?\nВыберите номер поезда от 1 до #{quantity}"
+  carrig_num = gets.chomp.to_i
+
+  passenger_carrige_delete(quantity_carrig, carrig_num)
+end
+
+puts 'Отобразить информацию о вагонах у поездов? (да/нет)?'
+yes_or_no = gets.chomp
+
+show_carr if yes_or_no == 'да'
 
 
+# cargo_train.delete_carrig
+# passenger_train.delete_carrig
 
-cargo_train.delete_carrig
-passenger_train.delete_carrig
-
-cargo_train.show_carriages
-passenger_train.show_carriages
+# cargo_train.show_carriages
+# passenger_train.show_carriages
 
 # station1 = Station.new('Санкт-Петербург')
 # station2 = Station.new('Владикавказ')

@@ -32,7 +32,7 @@ class Train
   end
 
   def show_carriages
-    puts "Колличество вагонов у поезда: #{@carrig.size}"
+    puts "Поезд тип: #{self.class} №#{self.number} присоединено вагонов: #{@carrig.size}"
     @carrig.each { |carrig| puts carrig }
   end
 
