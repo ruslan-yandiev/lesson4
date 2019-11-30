@@ -117,3 +117,11 @@ end
 def go_go_passenger(num)
   num.times { |index| @arr_passenger_train[index].go }
 end
+
+def go_back_cargo(num)
+  num.times { |index| @arr_cargo_train[index].go_back }
+end
+
+def go_back_passenger(num)
+  num.times { |index| @arr_passenger_train[index].go_back }
+end

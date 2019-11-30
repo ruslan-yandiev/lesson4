@@ -108,17 +108,36 @@ show_carr if yes_or_no == 'да'
 
 train_add_route
 
-puts 'Хотите отправить поезда в путь (да/нет)'
-yes_or_no = gets.chomp
+begin
+  puts 'Хотите отправить поезда в путь (да/нет)'
+  yes_or_no = gets.chomp
 
-if yes_or_no == 'да'
-  puts "сколько из #{@arr_cargo_train.size} грузовых поездов отправить?"
-  quantity = gets.chomp.to_i
+  if yes_or_no == 'да'
+    puts "сколько из #{@arr_cargo_train.size} грузовых поездов отправить?"
+    quantity = gets.chomp.to_i
 
-  go_go_cargo(quantity) if @arr_cargo_train.size <= quantity
+    go_go_cargo(quantity) if @arr_cargo_train.size <= quantity
 
-  puts "сколько из #{@arr_passenger_train.size} пассажирских поездов отправить?"
-  quantity = gets.chomp.to_i
+    puts "сколько из #{@arr_passenger_train.size} пассажирских поездов отправить?"
+    quantity = gets.chomp.to_i
 
-  go_go_passenger(quantity) if @arr_passenger_train.size <= quantity
-end
+    go_go_passenger(quantity) if @arr_passenger_train.size <= quantity
+  end
+end while != 'нет'
+
+begin
+  puts 'Хотите отправить поезда в обратный путь (да/нет)'
+  yes_or_no = gets.chomp
+
+  if yes_or_no == 'да'
+    puts "сколько из #{@arr_cargo_train.size} грузовых поездов отправить?"
+    quantity = gets.chomp.to_i
+
+    go_back_cargo(quantity) if @arr_cargo_train.size <= quantity
+
+    puts "сколько из #{@arr_passenger_train.size} пассажирских поездов отправить?"
+    quantity = gets.chomp.to_i
+
+    go_back_passenger(quantity) if @arr_passenger_train.size <= quantity
+  end
+end while != 'нет'
