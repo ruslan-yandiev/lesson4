@@ -186,15 +186,8 @@ class Сonstructor
       yes_or_no = gets.chomp
 
       if yes_or_no == 'да'
-        puts "сколько из #{@arr_cargo_train.size} грузовых поездов отправить?"
-        quantity = gets.chomp.to_i
-
-        go_go_cargo(quantity) if @arr_cargo_train.size <= quantity
-
-        puts "сколько из #{@arr_passenger_train.size} пассажирских поездов отправить?"
-        quantity = gets.chomp.to_i
-
-        go_go_passenger(quantity) if @arr_passenger_train.size <= quantity
+        go_go_cargo(@arr_cargo_train.size)
+        go_go_passenger(@arr_passenger_train.size)
       end
     end while yes_or_no != 'нет'
   end
@@ -205,15 +198,8 @@ class Сonstructor
       yes_or_no = gets.chomp
 
       if yes_or_no == 'да'
-        puts "сколько из #{@arr_cargo_train.size} грузовых поездов отправить?"
-        quantity = gets.chomp.to_i
-
-        go_back_cargo(quantity) if @arr_cargo_train.size <= quantity
-
-        puts "сколько из #{@arr_passenger_train.size} пассажирских поездов отправить?"
-        quantity = gets.chomp.to_i
-
-        go_back_passenger(quantity) if @arr_passenger_train.size <= quantity
+        go_back_cargo(@arr_cargo_train.size)
+        go_back_passenger(@arr_passenger_train.size)
       end
     end while yes_or_no != 'нет'
   end

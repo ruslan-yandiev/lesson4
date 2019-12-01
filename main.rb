@@ -6,7 +6,7 @@ require_relative 'cargo_train'
 require_relative 'passenger_train'
 require_relative 'station'
 require_relative 'route'
-require_relative 'constructor'
+require_relative 'сonstructor'
 
 arr = [
 "- Создавать станции",
