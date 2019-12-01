@@ -89,7 +89,7 @@ class Сonstructor
         puts 'Укажите имя маршрута который нужно скоректировать'
         number_route = gets.chomp
 
-        destroy_station(number_route)
+        destroy_station(number_route) if  @hh_route[number_route]
       end
     end while yes_or_no != 'нет' && yes_or_no != ''
   end
@@ -143,7 +143,7 @@ class Сonstructor
       puts "У какого поезда отцепить?\nВыберите номер поезда от 1 до #{@quantity2}"
       carrig_num = gets.chomp.to_i
 
-      cargo_carrige_delete(quantity_carrig, carrig_num)
+      cargo_carrige_delete(quantity_carrig, carrig_num) if quantity_carrig <= @quantity && carrig_num <= @quantity2
     end
   end
 
@@ -158,7 +158,7 @@ class Сonstructor
       puts "У какого поезда отцепить?\nВыберите номер поезда от 1 до #{@quantity2}"
       carrig_num = gets.chomp.to_i
 
-      passenger_carrige_delete(quantity_carrig, carrig_num)
+      passenger_carrige_delete(quantity_carrig, carrig_num) if quantity_carrig <= @quantity && carrig_num <= @quantity2
     end
   end
 
