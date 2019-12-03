@@ -1,5 +1,5 @@
 class Route
-  attr_accessor :route
+  attr_accessor :route, :name
 
   def initialize
     @name

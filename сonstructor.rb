@@ -46,96 +46,96 @@ class Сonstructor
   end
 
   def start
-    puts 'Выберите из списка:'
-
-    #  route
-    # create_carrig
-    #  create_train
-
-
-    # connect_carrig!
-    # correct_route
-    # show_carr!
-    # argo_carrige_delete!
-    # passenger_carrige_delete!
-    # train_add_route
-    # go_go
-    # go_back
+    show_all_object
+    route
+    correct_route
+    connect_carrig!
+    show_carr!
+    cargo_carrige_delete!
+    passenger_carrige_delete!
+    show_carr!
+    train_add_route
+    go_go
+    go_back
   end
 
   def route
+    puts "Необходимо составить маршрут следования и добавить станции к созданным маршрутам.\nКакие станции из созданных вы хотите добавить в маршрут?"
+
+    @routes.each_with_index do |type, index|
+      puts "\t#{index}. Маршрут: #{type.name}"
+    end
+    puts 'Выберите маршрут:'
+    number_r = gets.chomp.to_i
+
+    unless @routes[number_r]
+      puts 'Неверно выбран маршрут!!!'
+      self.route
+    end
+
     begin
-      puts "Необходимо составить маршрут следования и добавить станции к созданным маршрутам.\nКакие станции из созданных вы хотите добавить в маршрут?"
+      @stations.each_with_index do |type, index|
+        puts "\t#{index}. Станция: #{type.name}"
+      end
+
+      puts "Укажите номер станции.\nСтанции будут добавляться по порядку, от начальной и до конечной."
+      number_s = gets.chomp.to_i
+
+      if @stations[number_s] && @routes[number_r].route.include?(@stations[number_s]) == false
+        @routes[number_r].add_stations(@stations[number_s])
+      else
+        puts 'Неверно указана станция!!!'
+      end
+
+      puts 'Хотите добавить еще станцию? (да/нет)'
+      yes_or_no = gets.chomp
+    end while yes_or_no != 'нет' && yes_or_no != ''
+
+    puts 'Хотите создать новый маршрут? (да/нет)'
+    yes_or_no = gets.chomp
+    self.route if yes_or_no == 'да'
+  end
+
+  def correct_route
+    puts 'Скорректировать маршрут? (да/нет)'
+    yes_or_no = gets.chomp
+
+    if yes_or_no == 'да'
+      @routes.each_with_index do |type, index|
+        puts "\t#{index}. Маршрут: #{type.name}"
+      end
+
+      puts 'Выберите маршрут для коррекции:'
+      number_r = gets.chomp.to_i
+
+      unless @routes[number_r]
+        puts 'Неверно выбран маршрут!!!'
+        self.correct_route
+      end
+
 
       begin
-        @routes.each_with_index do |type, index|
-          puts "\t#{index}. Маршрут: #{type.name}"
-        end
-        puts 'Выберите маршрут:'
-        number_r = gets.chomp.to_i
-
-        puts 'Неверно выбран маршрут!!!' unless @routes[name_r]
-      end while @routes[name_r] != true
-
-      begin
-        @stations.each_with_index do |type, index|
+        @routes[number_r].route.each_with_index do |type, index|
           puts "\t#{index}. Станция: #{type.name}"
         end
 
-        puts "Укажите номер станции.\nСтанции будут добавляться по порядку, от начальной и до конечной."
+        print "Укажите номер станции которую нужно удалить:"
         number_s = gets.chomp.to_i
 
-        if @routes[name_r] && @stations[number_s] && @routes[name_r].include?(@stations[number_s]) == false
-          @routes[name_r].add_stations(@stations[number_s])
+        if @routes[number_r].route.include?(@routes[number_r].route[number_s])
+            @routes[number_r].route.delete_way(number_s)
         else
           puts 'Неверно указана станция!!!'
         end
 
-        puts 'Хотите добавить еще станцию? (да/нет)'
+        puts 'Хотите удалить станцию? (да/нет)'
         yes_or_no = gets.chomp
       end while yes_or_no != 'нет' && yes_or_no != ''
 
-      puts 'Хотите создать новый маршрут? (да/нет)'
+      puts 'Хотите еще откорректировать маршрут'
       yes_or_no = gets.chomp
-    end while yes_or_no != 'нет' && yes_or_no != ''
-  end
-
-  def correct_route
-    begin
-      puts 'Хотите скоректировать маршрут? (да/нет)'
-      yes_or_no = gets.chomp
-
-      if yes_or_no == 'да'
-        begin
-          @routes.each_with_index do |type, index|
-            puts "\t#{index}. Маршрут: #{type.name}"
-          end
-
-          puts 'Выберите маршрут для коррекции:'
-          number_r = gets.chomp.to_i
-
-          puts 'Неверно выбран маршрут!!!' unless @routes[name_r]
-        end while @routes[name_r] != true
-
-        begin
-          @routes[name_r].route.each_with_index do |type, index|
-            puts "\t#{index}. Станция: #{type.name}"
-          end
-
-          print "Укажите номер станции которую нужно удалить:"
-          number_s = gets.chomp.to_i
-
-          if @routes[name_r].route.include?(@routes[name_r].route[number_s])
-            @routes[name_r].route.delete_way(number_s)
-          else
-            puts 'Неверно указана станция!!!'
-          end
-
-          puts 'Хотите удалить еще станцию? (да/нет)'
-          yes_or_no = gets.chomp
-        end while yes_or_no != 'нет' && yes_or_no != ''
-      end
-    end while yes_or_no != 'нет' && yes_or_no != ''
+      self.route if yes_or_no == 'да'
+    end
   end
 
   def connect_carrig!
@@ -198,10 +198,10 @@ class Сonstructor
         print 'Выберите маршрут:'
         number_r = gets.chomp.to_i
 
-        puts 'Неверно выбран маршрут!!!' unless @routes[name_r]
-      end while @routes[name_r] != true
+        puts 'Неверно выбран маршрут!!!' unless @routes[number_r]
+      end while @routes[number_r] != true
 
-      train.add_route(@routes[name_r])
+      train.add_route(@routes[number_r])
     end
 
     @passenger_trains.each.with_index(1) do |train, index|
@@ -216,10 +216,10 @@ class Сonstructor
         print 'Выберите маршрут:'
         number_r = gets.chomp.to_i
 
-        puts 'Неверно выбран маршрут!!!' unless @routes[name_r]
-      end while @routes[name_r] != true
+        puts 'Неверно выбран маршрут!!!' unless @routes[number_r]
+      end while @routes[number_r] != true
 
-      train.add_route(@routes[name_r])
+      train.add_route(@routes[number_r])
     end
   end
 
@@ -291,5 +291,15 @@ class Сonstructor
 
   def go_back_passenger(num)
     num.times { |index| @passenger_trains[index].go_back }
+  end
+
+  def show_all_object
+  self.stations.each {|x| p x}
+  self.routes.each {|x| p x}
+  self.cargo_trains.each {|x| p x}
+  self.passenger_trains.each {|x| p x}
+  self.f_carrigs.each {|x| p x}
+  self.p_carrigs.each {|x| p x}
+  puts
   end
 end
