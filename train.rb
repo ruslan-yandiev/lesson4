@@ -12,7 +12,7 @@ class Train
   end
 
   def number!
-    print 'Введите наименование маршрута: '
+    print 'Введите номер поезда: '
     number_tr = gets.chomp.to_i
     @number = number_tr
   end

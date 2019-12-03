@@ -1,5 +1,5 @@
 class Сonstructor
-  attr_reader :collection, :stations, :routes, :
+  attr_reader :collection, :stations, :routes, :cargo_trains, :passenger_trains, :f_carrigs, :p_carrigs
 
   def initialize
     @collection = [Station, Route, CargoTrain, PassengerTrain, FreightCarrig, PassengerCarrig]
@@ -14,17 +14,29 @@ class Сonstructor
   def constructor(number, amount)
     amount.times do
       if @collection[number].new.instance_of? Station
-        @stations << @collection[number].new.name!
+        object = @collection[number].new
+        object.name!
+        @stations << object
       elsif  @collection[number].new.instance_of? Route
-        @routes << @collection[number].new.name!
+        object = @collection[number].new
+        object.name!
+        @routes << object
       elsif  @collection[number].new.instance_of? CargoTrain
-        @cargo_trains << @collection[number].new.number!
+        object = @collection[number].new
+        object.number!
+        @cargo_trains << object
       elsif  @collection[number].new.instance_of? PassengerTrain
-        @passenger_trains << @collection[number].new.number!
+        object = @collection[number].new
+        object.number!
+        @passenger_trains << object
       elsif  @collection[number].new.instance_of? FreightCarrig
-        @f_carrigs << @collection[number].new
+        object = @collection[number].new
+        object.number!
+        @f_carrigs << object
       elsif  @collection[number].new.instance_of? PassengerCarrig
-        @p_carrigs << @collection[number].new
+        object = @collection[number].new
+        object.number!
+        @p_carrigs << object
       end
     end
 
