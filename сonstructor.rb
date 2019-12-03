@@ -12,8 +12,10 @@ class Сonstructor
   end
 
   def constructor(number, amount)
-    amount.times do
-      if @collection[number].new.instance_of? Station
+    amount.times do |index|
+      if @collection[number].nil?
+        puts 'Вы неверно указали номер!!!'
+      elsif @collection[number].new.instance_of? Station
         object = @collection[number].new
         object.name!
         @stations << object
@@ -23,19 +25,19 @@ class Сonstructor
         @routes << object
       elsif  @collection[number].new.instance_of? CargoTrain
         object = @collection[number].new
-        object.number!
+        object.number!(index)
         @cargo_trains << object
       elsif  @collection[number].new.instance_of? PassengerTrain
         object = @collection[number].new
-        object.number!
+        object.number!(index)
         @passenger_trains << object
       elsif  @collection[number].new.instance_of? FreightCarrig
         object = @collection[number].new
-        object.number!
+        object.number!(index)
         @f_carrigs << object
       elsif  @collection[number].new.instance_of? PassengerCarrig
         object = @collection[number].new
-        object.number!
+        object.number!(index)
         @p_carrigs << object
       end
     end

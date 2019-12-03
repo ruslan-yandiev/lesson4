@@ -2,14 +2,12 @@ class Carrig
   attr_reader :number
 
   def initialize
-    @number
+    @number = 1
     @status = false
   end
 
-  def number!
-    print 'Введите номер вагона: '
-    number_carr = gets.chomp.to_i
-    @number = number_carr
+  def number!(number_carr)
+    @number += number_carr
   end
 
   def change_status(train)

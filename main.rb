@@ -41,6 +41,5 @@ begin
   choices.passenger_trains.each {|x| p x}
   choices.f_carrigs.each {|x| p x}
   choices.p_carrigs.each {|x| p x}
-
 end while choices.collection.size != 0
 
