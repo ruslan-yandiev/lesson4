@@ -164,7 +164,7 @@ class Сonstructor
       @cargo_trains.each_with_index {|train, index| puts "#{index}. Поезд:#{train.number}"}
       train_num = gets.chomp.to_i
 
-      cargo_carrige_delete(quantity_carrig, train_num) if cargo_trains[train_num] && cargo_trains[train_num].carrig.size <= quantity_carrig
+      cargo_carrige_delete(quantity_carrig, train_num) if @cargo_trains[train_num] && @cargo_trains[train_num].carrig.size <= quantity_carrig
     end
   end
 
@@ -176,10 +176,11 @@ class Сonstructor
       puts 'сколько вагонов отцепить?'
       quantity_carrig = gets.chomp.to_i
 
-      puts "У какого поезда отцепить?\nВыберите номер поезда от 1 до #{@quantity2}"
-      carrig_num = gets.chomp.to_i
+      puts "У какого поезда отцепить?\nВыберите номер поезда:"
+      @passenger_trains.each_with_index {|train, index| puts "#{index}. Поезд:#{train.number}"}
+      train_num = gets.chomp.to_i
 
-      passenger_carrige_delete(quantity_carrig, carrig_num) if quantity_carrig <= @quantity && carrig_num <= @quantity2
+      passenger_carrige_delete(quantity_carrig, train_num) if  @passenger_trains[train_num] &&  @passenger_trains[train_num].carrig.size <= quantity_carrig
     end
   end
 
@@ -248,11 +249,11 @@ class Сonstructor
   end
 
   def cargo_carrige_delete(carrig_cum, train_num)
-    carrig_cum.times { @cargo_trains[train_num - 1].delete_carrig }
+    carrig_cum.times { @cargo_trains[train_num].delete_carrig }
   end
 
   def passenger_carrige_delete(carrig_cum, train_num)
-    carrig_cum.times { @passenger_trains[train_num - 1].delete_carrig }
+    carrig_cum.times { @passenger_trains[train_num].delete_carrig }
   end
 
   def go_go_cargo(num)
