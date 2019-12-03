@@ -185,20 +185,41 @@ class Сonstructor
   end
 
   def train_add_route
-    puts 'необходимо назначить путь поездам'
+    puts 'необходимо назначить маршрут поездам'
 
     @cargo_trains.each.with_index(1) do |train, index|
-      puts "Укажите путь для #{index}-го грузового поезда"
-      route = gets.chomp
+      puts "Укажите маршрут для #{index}-го грузового поезда"
 
-      train.add_route(@routes[route]) if @routes[route]
+      begin
+        @routes.each_with_index do |type, index|
+          puts "\t#{index}. Маршрут: #{type.name}"
+        end
+
+        print 'Выберите маршрут:'
+        number_r = gets.chomp.to_i
+
+        puts 'Неверно выбран маршрут!!!' unless @routes[name_r]
+      end while @routes[name_r] != true
+
+      train.add_route(@routes[name_r])
     end
 
     @passenger_trains.each.with_index(1) do |train, index|
-      puts "Укажите путь для #{index}-го пассажирского поезда"
+      puts "Укажите маршрут для #{index}-го пассажирского поезда"
       route = gets.chomp
 
-      train.add_route(@routes[route]) if @routes[route]
+      begin
+        @routes.each_with_index do |type, index|
+          puts "\t#{index}. Маршрут: #{type.name}"
+        end
+
+        print 'Выберите маршрут:'
+        number_r = gets.chomp.to_i
+
+        puts 'Неверно выбран маршрут!!!' unless @routes[name_r]
+      end while @routes[name_r] != true
+
+      train.add_route(@routes[name_r])
     end
   end
 
