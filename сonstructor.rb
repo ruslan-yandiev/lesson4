@@ -48,7 +48,6 @@ class Сonstructor
   def start
     puts 'Выберите из списка:'
 
-    # station
     #  route
     # create_carrig
     #  create_train
@@ -64,56 +63,36 @@ class Сonstructor
     # go_back
   end
 
-  def station
-    puts 'Укажите минимум две станции:'
-    station1 = gets.chomp.capitalize
-    @stations[station1] = Station.new(station1)
-
-    station2 = gets.chomp.capitalize
-    @stations[station2] = Station.new(station2)
-
-    begin
-      puts 'Хотите добавить еще станцию? (да/нет)'
-      yes_or_no = gets.chomp
-
-      if yes_or_no == 'да'
-        puts 'Укажите название станции:'
-        station3 = gets.chomp.capitalize
-        @stations[station3] = Station.new(station3)
-      end
-    end while yes_or_no != 'нет' && yes_or_no != ''
-  end
-
   def route
     begin
+      puts "Необходимо составить маршрут следования и добавить станции к созданным маршрутам.\nКакие станции из созданных вы хотите добавить в маршрут?"
+
       begin
-        puts "Необходимо составить маршрут следования. Какие станции из созданных вы хотите добавить в маршрут?"
+        @routes.each_with_index do |type, index|
+          puts "\t#{index}. Маршрут: #{type.name}"
+        end
+        puts 'Выберите маршрут:'
+        number_r = gets.chomp.to_i
 
-        puts 'Дайте имя или присвойте номер маршруту'
-        name_route = gets.chomp
+        puts 'Неверно выбран маршрут!!!' unless @routes[name_r]
+      end while @routes[name_r] != true
 
-        puts 'Укажите начальную станцию:'
-        name1 = gets.chomp.capitalize
+      begin
+        @stations.each_with_index do |type, index|
+          puts "\t#{index}. Станция: #{type.name}"
+        end
 
-        puts 'Укажите конечную станцию:'
-        name2 = gets.chomp.capitalize
+        puts "Укажите номер станции.\nСтанции будут добавляться по порядку, от начальной и до конечной."
+        number_s = gets.chomp.to_i
 
-        if  @stations[name1] && @stations[name2]
-          @routes[name_route] = Route.new(@stations[name1], @stations[name2])
+        if @routes[name_r] && @stations[number_s] && @routes[name_r].include?(@stations[number_s]) == false
+          @routes[name_r].add_stations(@stations[number_s])
         else
-          puts 'Вы не создавали таких станций'
+          puts 'Неверно указана станция!!!'
         end
-      end while @stations[name1].nil? && @stations[name2].nil?
 
-      begin
-        puts 'Хотите добавить промежуточную станцию? (да/нет)'
+        puts 'Хотите добавить еще станцию? (да/нет)'
         yes_or_no = gets.chomp
-
-        if yes_or_no == 'да'
-          puts 'Укажите название станции:'
-          name3 = gets.chomp.capitalize
-          @routes[name_route].add_stations(@stations[name3]) if @stations[name3]
-        end
       end while yes_or_no != 'нет' && yes_or_no != ''
 
       puts 'Хотите создать новый маршрут? (да/нет)'
@@ -123,42 +102,40 @@ class Сonstructor
 
   def correct_route
     begin
-      puts 'Хотите скоректировать какой-то маршрут? (да/нет)'
+      puts 'Хотите скоректировать маршрут? (да/нет)'
       yes_or_no = gets.chomp
 
       if yes_or_no == 'да'
-        puts 'Укажите имя маршрута который нужно скоректировать'
-        number_route = gets.chomp
+        begin
+          @routes.each_with_index do |type, index|
+            puts "\t#{index}. Маршрут: #{type.name}"
+          end
 
-        destroy_station(number_route) if  @routes[number_route]
+          puts 'Выберите маршрут для коррекции:'
+          number_r = gets.chomp.to_i
+
+          puts 'Неверно выбран маршрут!!!' unless @routes[name_r]
+        end while @routes[name_r] != true
+
+        begin
+          @routes[name_r].route.each_with_index do |type, index|
+            puts "\t#{index}. Станция: #{type.name}"
+          end
+
+          print "Укажите номер станции которую нужно удалить:"
+          number_s = gets.chomp.to_i
+
+          if @routes[name_r].route.include?(@routes[name_r].route[number_s])
+            @routes[name_r].route.delete_way(number_s)
+          else
+            puts 'Неверно указана станция!!!'
+          end
+
+          puts 'Хотите удалить еще станцию? (да/нет)'
+          yes_or_no = gets.chomp
+        end while yes_or_no != 'нет' && yes_or_no != ''
       end
     end while yes_or_no != 'нет' && yes_or_no != ''
-  end
-
-  def create_train
-    puts 'Сколько грузовых и товарных поездов создать?'
-    @quantity2 = gets.chomp.to_i
-
-    @cargo_trains = []
-    @passenger_trains = []
-
-    1.upto(@quantity2) do |number|
-      @cargo_trains << CargoTrain.new(number)
-
-      @passenger_trains << PassengerTrain.new(number)
-    end
-  end
-
-  def create_carrig
-    puts 'Сколько грузовых и товарных вагонов создать?'
-    @quantity = gets.chomp.to_i
-
-
-    1.upto(@quantity) do |number|
-      @f_carrigs << FreightCarrig.new(number, 5000)
-
-      @p_carrigs << PassengerCarrig.new(number, 100)
-    end
   end
 
   def connect_carrig!
@@ -175,7 +152,7 @@ class Сonstructor
     show_carr if yes_or_no == 'да'
   end
 
-  def argo_carrige_delete!
+  def cargo_carrige_delete!
     puts 'Хотите отцепить товарные вагоны? (да/нет)?'
     yes_or_no = gets.chomp
 
@@ -183,10 +160,11 @@ class Сonstructor
       puts 'сколько вагонов отцепить?'
       quantity_carrig = gets.chomp.to_i
 
-      puts "У какого поезда отцепить?\nВыберите номер поезда от 1 до #{@quantity2}"
-      carrig_num = gets.chomp.to_i
+      puts "У какого поезда отцепить?\nВыберите номер поезда:"
+      @cargo_trains.each_with_index {|train, index| puts "#{index}. Поезд:#{train.number}"}
+      train_num = gets.chomp.to_i
 
-      cargo_carrige_delete(quantity_carrig, carrig_num) if quantity_carrig <= @quantity && carrig_num <= @quantity2
+      cargo_carrige_delete(quantity_carrig, train_num) if cargo_trains[train_num] && cargo_trains[train_num].carrig.size <= quantity_carrig
     end
   end
 
@@ -248,15 +226,6 @@ class Сonstructor
   end
 
   protected
-
-  def destroy_station(number_route)
-    puts "Какую станцию из маршрута: #{number_route} хотите удалит?"
-    @routes[number_route].show_way
-
-    puts 'Введите название станции:'
-    name_station = gets.chomp
-    @routes[number_route].delete_way(@stations[name_station]) if @stations[name_station]
-  end
 
   def connect_carrig
     @cargo_trains.each do |train|

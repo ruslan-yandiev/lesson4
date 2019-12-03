@@ -7,12 +7,12 @@ class Route
   end
 
   def add_stations(new_route)
-    # @route << new_route
+    @route << new_route
     # @route.insert(-2, new_route)
   end
 
-  def delete_way(way)
-    @route.delete(way)
+  def delete_way(index)
+    @route.delete(index)
   end
 
   def show_way(name_station = nil)
