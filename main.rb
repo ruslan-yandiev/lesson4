@@ -21,4 +21,21 @@ arr = [
 puts 'Программа позволит:'
 arr.each { |x| puts x }
 
-Сonstructor.new.start
+choices = Сonstructor.new
+
+begin
+  choices.collection.each_with_index do |type, index|
+    puts "\t#{index}. create: #{type}s"
+  end
+
+  print 'Выберите номер действия: '
+  number = gets.chomp.to_i
+
+  print 'Сколько обхектов создать: '
+  amount = gets.chomp.to_i
+
+  choices.constructor(number, amount)
+  p choices.stations
+  p choices.routes
+end while choices.collection.size != 0
+

@@ -1,12 +1,14 @@
 class Route
   attr_accessor :route
 
-  def initialize(starting, final)
-    @route = [starting, final]
+  def initialize
+    @name
+    @route = []
   end
 
   def add_stations(new_route)
-    @route.insert(-2, new_route)
+    # @route << new_route
+    # @route.insert(-2, new_route)
   end
 
   def delete_way(way)
@@ -20,5 +22,11 @@ class Route
     else
       @route.each { |x| puts x.name }
     end
+  end
+
+  def name!
+    print 'Введите наименование маршрута: '
+    name_st = gets.chomp.capitalize
+    @name = name_st
   end
 end

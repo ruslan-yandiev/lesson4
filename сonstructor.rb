@@ -1,35 +1,62 @@
 class Сonstructor
+  attr_reader :collection, :stations, :routes, :
 
   def initialize
-    @hh_station = {}
-    @hh_route = {}
-    @arr_f = []
-    @arr_p = []
-    @arr_cargo_train = []
-    @arr_passenger_train = []
+    @collection = [Station, Route, CargoTrain, PassengerTrain, FreightCarrig, PassengerCarrig]
+    @stations = []
+    @routes = []
+    @cargo_trains = []
+    @passenger_trains = []
+    @f_carrigs = []
+    @p_carrigs = []
+  end
+
+  def constructor(number, amount)
+    amount.times do
+      if @collection[number].new.instance_of? Station
+        @stations << @collection[number].new.name!
+      elsif  @collection[number].new.instance_of? Route
+        @routes << @collection[number].new.name!
+      elsif  @collection[number].new.instance_of? CargoTrain
+        @cargo_trains << @collection[number].new.number!
+      elsif  @collection[number].new.instance_of? PassengerTrain
+        @passenger_trains << @collection[number].new.number!
+      elsif  @collection[number].new.instance_of? FreightCarrig
+        @f_carrigs << @collection[number].new
+      elsif  @collection[number].new.instance_of? PassengerCarrig
+        @p_carrigs << @collection[number].new
+      end
+    end
+
+    @collection.delete_at(number)
   end
 
   def start
-    station
-    route
-    correct_route
-    create_carrig_train
-    connect_carrig!
-    show_carr!
-    argo_carrige_delete!
-    passenger_carrige_delete!
-    train_add_route
-    go_go
-    go_back
+    puts 'Выберите из списка:'
+
+    # station
+    #  route
+    # create_carrig
+    #  create_train
+
+
+    # connect_carrig!
+    # correct_route
+    # show_carr!
+    # argo_carrige_delete!
+    # passenger_carrige_delete!
+    # train_add_route
+    # go_go
+    # go_back
   end
 
   def station
     puts 'Укажите минимум две станции:'
     station1 = gets.chomp.capitalize
-    @hh_station[station1] = Station.new(station1)
+    @stations[station1] = Station.new(station1)
 
     station2 = gets.chomp.capitalize
-    @hh_station[station2] = Station.new(station2)
+    @stations[station2] = Station.new(station2)
 
     begin
       puts 'Хотите добавить еще станцию? (да/нет)'
@@ -38,7 +65,7 @@ class Сonstructor
       if yes_or_no == 'да'
         puts 'Укажите название станции:'
         station3 = gets.chomp.capitalize
-        @hh_station[station3] = Station.new(station3)
+        @stations[station3] = Station.new(station3)
       end
     end while yes_or_no != 'нет' && yes_or_no != ''
   end
@@ -57,12 +84,12 @@ class Сonstructor
         puts 'Укажите конечную станцию:'
         name2 = gets.chomp.capitalize
 
-        if  @hh_station[name1] && @hh_station[name2]
-          @hh_route[name_route] = Route.new(@hh_station[name1], @hh_station[name2])
+        if  @stations[name1] && @stations[name2]
+          @routes[name_route] = Route.new(@stations[name1], @stations[name2])
         else
           puts 'Вы не создавали таких станций'
         end
-      end while @hh_station[name1].nil? && @hh_station[name2].nil?
+      end while @stations[name1].nil? && @stations[name2].nil?
 
       begin
         puts 'Хотите добавить промежуточную станцию? (да/нет)'
@@ -71,7 +98,7 @@ class Сonstructor
         if yes_or_no == 'да'
           puts 'Укажите название станции:'
           name3 = gets.chomp.capitalize
-          @hh_route[name_route].add_stations(@hh_station[name3]) if @hh_station[name3]
+          @routes[name_route].add_stations(@stations[name3]) if @stations[name3]
         end
       end while yes_or_no != 'нет' && yes_or_no != ''
 
@@ -89,32 +116,34 @@ class Сonstructor
         puts 'Укажите имя маршрута который нужно скоректировать'
         number_route = gets.chomp
 
-        destroy_station(number_route) if  @hh_route[number_route]
+        destroy_station(number_route) if  @routes[number_route]
       end
     end while yes_or_no != 'нет' && yes_or_no != ''
   end
 
-  def create_carrig_train
+  def create_train
+    puts 'Сколько грузовых и товарных поездов создать?'
+    @quantity2 = gets.chomp.to_i
+
+    @cargo_trains = []
+    @passenger_trains = []
+
+    1.upto(@quantity2) do |number|
+      @cargo_trains << CargoTrain.new(number)
+
+      @passenger_trains << PassengerTrain.new(number)
+    end
+  end
+
+  def create_carrig
     puts 'Сколько грузовых и товарных вагонов создать?'
     @quantity = gets.chomp.to_i
 
 
     1.upto(@quantity) do |number|
-      @arr_f << FreightCarrig.new(number, 5000)
+      @f_carrigs << FreightCarrig.new(number, 5000)
 
-      @arr_p << PassengerCarrig.new(number, 100)
-    end
-
-    puts 'Сколько грузовых и товарных поездов создать?'
-    @quantity2 = gets.chomp.to_i
-
-    @arr_cargo_train = []
-    @arr_passenger_train = []
-
-    1.upto(@quantity2) do |number|
-      @arr_cargo_train << CargoTrain.new(number)
-
-      @arr_passenger_train << PassengerTrain.new(number)
+      @p_carrigs << PassengerCarrig.new(number, 100)
     end
   end
 
@@ -165,18 +194,18 @@ class Сonstructor
   def train_add_route
     puts 'необходимо назначить путь поездам'
 
-    @arr_cargo_train.each.with_index(1) do |train, index|
+    @cargo_trains.each.with_index(1) do |train, index|
       puts "Укажите путь для #{index}-го грузового поезда"
       route = gets.chomp
 
-      train.add_route(@hh_route[route]) if @hh_route[route]
+      train.add_route(@routes[route]) if @routes[route]
     end
 
-    @arr_passenger_train.each.with_index(1) do |train, index|
+    @passenger_trains.each.with_index(1) do |train, index|
       puts "Укажите путь для #{index}-го пассажирского поезда"
       route = gets.chomp
 
-      train.add_route(@hh_route[route]) if @hh_route[route]
+      train.add_route(@routes[route]) if @routes[route]
     end
   end
 
@@ -186,8 +215,8 @@ class Сonstructor
       yes_or_no = gets.chomp
 
       if yes_or_no == 'да'
-        go_go_cargo(@arr_cargo_train.size)
-        go_go_passenger(@arr_passenger_train.size)
+        go_go_cargo(@cargo_trains.size)
+        go_go_passenger(@passenger_trains.size)
       end
     end while yes_or_no != 'нет'
   end
@@ -198,8 +227,8 @@ class Сonstructor
       yes_or_no = gets.chomp
 
       if yes_or_no == 'да'
-        go_back_cargo(@arr_cargo_train.size)
-        go_back_passenger(@arr_passenger_train.size)
+        go_back_cargo(@cargo_trains.size)
+        go_back_passenger(@passenger_trains.size)
       end
     end while yes_or_no != 'нет'
   end
@@ -208,54 +237,54 @@ class Сonstructor
 
   def destroy_station(number_route)
     puts "Какую станцию из маршрута: #{number_route} хотите удалит?"
-    @hh_route[number_route].show_way
+    @routes[number_route].show_way
 
     puts 'Введите название станции:'
     name_station = gets.chomp
-    @hh_route[number_route].delete_way(@hh_station[name_station]) if @hh_station[name_station]
+    @routes[number_route].delete_way(@stations[name_station]) if @stations[name_station]
   end
 
   def connect_carrig
-    @arr_cargo_train.each do |train|
-      @arr_f.each { |carrig| train.add_carrig(carrig) }
+    @cargo_trains.each do |train|
+      @f_carrigs.each { |carrig| train.add_carrig(carrig) }
     end
 
-    @arr_passenger_train.each do |train|
-      @arr_p.each { |carrig| train.add_carrig(carrig) }
+    @passenger_trains.each do |train|
+      @p_carrigs.each { |carrig| train.add_carrig(carrig) }
     end
   end
 
   def show_carr
-    @arr_cargo_train.each do |train|
+    @cargo_trains.each do |train|
       train.show_carriages
     end
 
-    @arr_passenger_train.each do |train|
+    @passenger_trains.each do |train|
       train.show_carriages
     end
   end
 
   def cargo_carrige_delete(carrig_cum, train_num)
-    carrig_cum.times { @arr_cargo_train[train_num - 1].delete_carrig }
+    carrig_cum.times { @cargo_trains[train_num - 1].delete_carrig }
   end
 
   def passenger_carrige_delete(carrig_cum, train_num)
-    carrig_cum.times { @arr_passenger_train[train_num - 1].delete_carrig }
+    carrig_cum.times { @passenger_trains[train_num - 1].delete_carrig }
   end
 
   def go_go_cargo(num)
-    num.times { |index| @arr_cargo_train[index].go }
+    num.times { |index| @cargo_trains[index].go }
   end
 
   def go_go_passenger(num)
-    num.times { |index| @arr_passenger_train[index].go }
+    num.times { |index| @passenger_trains[index].go }
   end
 
   def go_back_cargo(num)
-    num.times { |index| @arr_cargo_train[index].go_back }
+    num.times { |index| @cargo_trains[index].go_back }
   end
 
   def go_back_passenger(num)
-    num.times { |index| @arr_passenger_train[index].go_back }
+    num.times { |index| @passenger_trains[index].go_back }
   end
 end

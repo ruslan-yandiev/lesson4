@@ -1,8 +1,8 @@
 class Station
   attr_reader :name, :train
 
-  def initialize(name)
-    @name = name
+  def initialize
+    @name
     @trains = []
   end
 
@@ -23,5 +23,11 @@ class Station
   def send_train(train)
     puts "Со станции #{name} отправился поезд: #{train.class}  №#{train.number}"
     @trains.delete(train)
+  end
+
+  def name!
+    print 'Введите наименование станции: '
+    name_st = gets.chomp.capitalize
+    @name = name_st
   end
 end

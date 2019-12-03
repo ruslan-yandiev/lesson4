@@ -1,14 +1,20 @@
 class Train
   attr_reader :number, :carrig
 
-  def initialize(number)
-    @number = number
+  def initialize
+    @number
     @speed = 0
     @route
     @arr_stations = []
     @train_now = nil
     @sum = 0
     @carrig = []
+  end
+
+  def number!
+    print 'Введите наименование маршрута: '
+    number_tr = gets.chomp.to_i
+    @number = number_tr
   end
 
   def type_train
