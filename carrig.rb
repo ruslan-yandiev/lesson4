@@ -8,8 +8,8 @@ class Carrig
 
   def number!
     print 'Введите номер вагона: '
-    number_car = gets.chomp.to_i
-    @number = number_car
+    number_carr = gets.chomp.to_i
+    @number = number_carr
   end
 
   def change_status(train)
