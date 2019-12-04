@@ -47,7 +47,7 @@ class Сonstructor
 
   def start
     show_all_object
-    route
+    route!
     correct_route
     connect_carrig!
     show_carr!
@@ -60,7 +60,7 @@ class Сonstructor
     go_back
   end
 
-  def route
+  def route!
     puts "Необходимо составить маршрут следования и добавить станции к созданным маршрутам.\nКакие станции из созданных вы хотите добавить в маршрут?"
 
     @routes.each_with_index do |type, index|
@@ -71,7 +71,7 @@ class Сonstructor
 
     unless @routes[number_r]
       puts 'Неверно выбран маршрут!!!'
-      self.route
+      self.route!
     end
 
     begin
@@ -92,9 +92,9 @@ class Сonstructor
       yes_or_no = gets.chomp
     end while yes_or_no != 'нет' && yes_or_no != ''
 
-    puts 'Хотите создать новый маршрут? (да/нет)'
+    puts 'Хотите сформировать новый маршрут? (да/нет)'
     yes_or_no = gets.chomp
-    self.route if yes_or_no == 'да'
+    self.route! if yes_or_no == 'да'
   end
 
   def correct_route
@@ -124,7 +124,7 @@ class Сonstructor
         number_s = gets.chomp.to_i
 
         if @routes[number_r].route.include?(@routes[number_r].route[number_s])
-            @routes[number_r].route.delete_way(number_s)
+            @routes[number_r].delete_way(number_s)
         else
           puts 'Неверно указана станция!!!'
         end
@@ -135,7 +135,7 @@ class Сonstructor
 
       puts 'Хотите еще откорректировать маршрут'
       yes_or_no = gets.chomp
-      self.route if yes_or_no == 'да'
+      self.correct_route if yes_or_no == 'да'
     end
   end
 

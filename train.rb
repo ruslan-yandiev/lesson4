@@ -61,7 +61,7 @@ class Train
     if @carrig.size.zero?
       puts "Вагонов уже не осталось."
     elsif carrig.nil? && @speed.zero?
-      disconnect_carrig = @carrig.delete_at(0)
+      disconnect_carrig = @carrig.shift
       disconnect_carrig.change_status(self)
     elsif @speed.zero?
       @carrig.delete(carrig)
