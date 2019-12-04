@@ -140,21 +140,21 @@ class Сonstructor
   end
 
   def connect_carrig!
-    puts 'Присоединить к созданным поездам имеющиеся вагоны? (да/нет)?'
+    puts 'Присоединить к созданным поездам имеющиеся вагоны (да/нет)?'
     yes_or_no = gets.chomp
 
     connect_carrig if yes_or_no == 'да'
   end
 
   def show_carr!
-    puts 'Отобразить информацию о вагонах у поездов? (да/нет)?'
+    puts 'Отобразить информацию о вагонах у поездов (да/нет)?'
     yes_or_no = gets.chomp
 
     show_carr if yes_or_no == 'да'
   end
 
   def cargo_carrige_delete!
-    puts 'Хотите отцепить товарные вагоны? (да/нет)?'
+    puts 'Хотите отцепить товарные вагоны (да/нет)?'
     yes_or_no = gets.chomp
 
     if yes_or_no == 'да'
@@ -165,12 +165,12 @@ class Сonstructor
       @cargo_trains.each_with_index {|train, index| puts "#{index}. Поезд:#{train.number}"}
       train_num = gets.chomp.to_i
 
-      cargo_carrige_delete(quantity_carrig, train_num) if @cargo_trains[train_num] && @cargo_trains[train_num].carrig.size <= quantity_carrig
+      cargo_carrige_delete(quantity_carrig, train_num) if #@cargo_trains[train_num] && @cargo_trains[train_num].carrig.size <= quantity_carrig
     end
   end
 
   def passenger_carrige_delete!
-    puts 'Хотите отцепить пассажирские вагоны? (да/нет)?'
+    puts 'Хотите отцепить пассажирские вагоны (да/нет)?'
     yes_or_no = gets.chomp
 
     if yes_or_no == 'да'
@@ -181,7 +181,7 @@ class Сonstructor
       @passenger_trains.each_with_index {|train, index| puts "#{index}. Поезд:#{train.number}"}
       train_num = gets.chomp.to_i
 
-      passenger_carrige_delete(quantity_carrig, train_num) if  @passenger_trains[train_num] &&  @passenger_trains[train_num].carrig.size <= quantity_carrig
+      passenger_carrige_delete(quantity_carrig, train_num) if  #@passenger_trains[train_num] &&  @passenger_trains[train_num].carrig.size <= quantity_carrig
     end
   end
 
