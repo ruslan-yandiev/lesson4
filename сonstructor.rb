@@ -12,6 +12,11 @@ class Сonstructor
   end
 
   def constructor(number, amount)
+    unless amount >= 1
+      puts 'Неверно задано колличество создаваемых объектов!!!'
+      exit
+    end
+
     amount.times do |index|
       if @collection[number].nil?
         puts 'Вы неверно указали номер!!!'
@@ -120,7 +125,7 @@ class Сonstructor
           puts "\t#{index}. Станция: #{type.name}"
         end
 
-        print "Укажите номер станции которую нужно удалить:"
+        print "Укажите номер станции которую нужно удалить: "
         number_s = gets.chomp.to_i
 
         if @routes[number_r].route.include?(@routes[number_r].route[number_s])
@@ -129,11 +134,11 @@ class Сonstructor
           puts 'Неверно указана станция!!!'
         end
 
-        puts 'Хотите удалить станцию? (да/нет)'
+        puts 'Хотите еще удалить станцию? (да/нет)'
         yes_or_no = gets.chomp
       end while yes_or_no != 'нет' && yes_or_no != ''
 
-      puts 'Хотите еще откорректировать маршрут'
+      puts 'Хотите еще откорректировать маршрут (да/нет)?'
       yes_or_no = gets.chomp
       self.correct_route if yes_or_no == 'да'
     end
@@ -165,7 +170,7 @@ class Сonstructor
       @cargo_trains.each_with_index {|train, index| puts "#{index}. Поезд:#{train.number}"}
       train_num = gets.chomp.to_i
 
-      cargo_carrige_delete(quantity_carrig, train_num) if #@cargo_trains[train_num] && @cargo_trains[train_num].carrig.size <= quantity_carrig
+      cargo_carrige_delete(quantity_carrig, train_num) if @cargo_trains[train_num]
     end
   end
 
@@ -181,7 +186,7 @@ class Сonstructor
       @passenger_trains.each_with_index {|train, index| puts "#{index}. Поезд:#{train.number}"}
       train_num = gets.chomp.to_i
 
-      passenger_carrige_delete(quantity_carrig, train_num) if  #@passenger_trains[train_num] &&  @passenger_trains[train_num].carrig.size <= quantity_carrig
+      passenger_carrige_delete(quantity_carrig, train_num) if  @passenger_trains[train_num]
     end
   end
 
@@ -296,12 +301,13 @@ class Сonstructor
   end
 
   def show_all_object
+  40.times {print '='}
   self.stations.each {|x| p x}
   self.routes.each {|x| p x}
   self.cargo_trains.each {|x| p x}
   self.passenger_trains.each {|x| p x}
   self.f_carrigs.each {|x| p x}
   self.p_carrigs.each {|x| p x}
-  puts
+  40.times {print '='}
   end
 end
